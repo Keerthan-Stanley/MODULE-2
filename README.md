@@ -18,13 +18,13 @@ To verify that a digital circuit works before manufacturing it, we rely on a sim
 *   **Testbench:** A separate Verilog file used to test the design. It is not meant to be synthesized into hardware. Instead, it generates input signals (stimulus), feeds them into the design, and monitors the outputs to ensure the design behaves exactly as expected.
 *   **Simulator:** A software tool that takes the Design and Testbench, processes the inputs over time, and models how the hardware will behave. It outputs a waveform file (usually `.vcd`) so we can visually check signal transitions.
    
-*   <img width="1111" height="640" alt="Screenshot 2026-08-08 233200" src="https://github.com/user-attachments/assets/d41ac6e1-273d-45ca-b743-e184a5cf7b61" />
+<img width="1111" height="640" alt="Screenshot 2026-08-08 233200" src="https://github.com/user-attachments/assets/c14399bc-9ca5-47f3-a083-799709798328" />
 
 
 ### 2. Icarus Verilog (iverilog)
 `iverilog` is a free, open-source Verilog simulation tool. In our workflow, it acts as the compiler. It takes the Verilog design file and the testbench file, compiles them together, and generates an executable binary. When this binary is run, it produces the Value Change Dump (`.vcd`) file, which we then visualize using **GTKWave**.
 
-<img width="1250" height="552" alt="Screenshot 2026-08-08 233218" src="https://github.com/user-attachments/assets/2f415f00-2e5f-43f4-810e-f563984f5a1f" />
+<img width="1250" height="552" alt="Screenshot 2026-08-08 233218" src="https://github.com/user-attachments/assets/71433ad0-c511-4f67-b95e-749874299a74" />
 
 
 ### 3. The "Good Mux" Lab
@@ -34,7 +34,8 @@ The `good_mux.v` (a standard 2:1 Multiplexer) serves as our primary introductory
 3. Simulating it with `iverilog` to verify the waveform.
 4. Passing it to the synthesis tool to see how a behavioral multiplexer is converted into standard logic gates.
 
-<img width="552" height="173" alt="Screenshot 2026-08-08 194558" src="https://github.com/user-attachments/assets/0cd0bc1f-797a-46c5-aa8d-db8fe9cdcfd5" />
+<img width="552" height="173" alt="Screenshot 2026-08-08 194558" src="https://github.com/user-attachments/assets/122f578d-e9b9-4b45-a09f-9decca1aeb90" />
+
 
 
 ### 4. RTL vs. Gate-Level Netlist
@@ -52,13 +53,15 @@ In digital design, synthesis (specifically logic synthesis) is the automated pro
 
 Think of it like a software compiler: just as a compiler translates C++ code into machine code (1s and 0s) that a processor can execute, a synthesis tool translates Verilog code into a network of actual logic gates that can be physically manufactured on a silicon chip.
 
-<img width="1390" height="882" alt="Screenshot 2026-08-08 210735" src="https://github.com/user-attachments/assets/3d1947ab-d789-4ffc-be7a-f5d52b70c306" />
+<img width="1390" height="882" alt="Screenshot 2026-08-08 210735" src="https://github.com/user-attachments/assets/37b8fb4c-370e-4405-9b35-f85ad1cef777" />
+
 
 
 ### 6. What is Yosys?
 **Yosys** is a robust, open-source framework for Verilog RTL synthesis. If `iverilog` is used to *test* the logic, Yosys is used to *build* the logic. It acts as the bridge between abstract behavioral code and physical hardware gates.
 
-<img width="1270" height="670" alt="Screenshot 2026-08-08 233308" src="https://github.com/user-attachments/assets/2d3a09bc-63a2-4c42-a475-53c1f4b5263a" />
+<img width="1270" height="670" alt="Screenshot 2026-08-08 233308" src="https://github.com/user-attachments/assets/2f799c1a-9e4b-496a-9cad-3b1672471544" />
+
 
 
 ### 7. What can we do with Yosys?
@@ -68,6 +71,8 @@ Yosys performs several critical tasks in the VLSI frontend flow:
 *   **Technology Mapping:** It takes the optimized generic logic and maps it directly to the physical standard cells provided in a Process Design Kit (like the `sky130_fd_sc_hd` library).
 *   **Netlist Generation:** It outputs the final Gate-Level Netlist (`.v` file) which is then passed to the physical design (layout) team.
 *   **Visualizing Logic:** It can generate graphical schematics of the synthesized logic using the `show` command, helping designers visually inspect how their code was mapped to hardware.
+
+
 
   
 ### Module 2: 
@@ -81,6 +86,9 @@ CONTENTS:
 5. What is flat synthesis?
 6. Hierarchical vs. Flat Synthesis
 7. Which one is preferred when?
+8. Why do we need Flip-Flops (Flops)?
+9. Asynchronous vs. Synchronous Set/Reset
+10. Hardware-Efficient Math: Multiplying by 2 and 8
 
 #### 1. What does a `.lib` contain?
 A `.lib` (Liberty) file is an ASCII text file that acts as a comprehensive database for standard cells (like AND, OR, MUX, and Flip-Flops) provided by a semiconductor foundry. It contains:
@@ -138,3 +146,39 @@ These are two distinct strategies a synthesis tool uses to map your RTL into a n
 *   **Flat Synthesis is preferred when:**
     *   Working on smaller designs or individual IP blocks.
     *   Maximum optimization is required. Because module boundaries are dissolved, the synthesis tool can share logic and optimize gates *across* what used to be module barriers, often resulting in better area and timing performance.
+
+
+#### 8. Why do we need Flip-Flops (Flops)?
+In digital design, logic is divided into two categories: Combinational and Sequential. We need flip-flops (sequential logic) for two primary reasons:
+*   **State Storage:** Combinational logic (like AND/OR gates) has no memory; its output depends entirely on the current inputs. Flip-flops allow the circuit to remember previous states, which is necessary for building counters, state machines, and processors.
+*   **Glitch Prevention (Synchronization):** In combinational logic, different paths have different propagation delays. When inputs change, the outputs can momentarily fluctuate (glitch) before settling on the correct value. Flip-flops act as barriers triggered by a Clock signal. They capture the stable data at the clock edge and hold it steady, preventing those intermediate glitches from propagating through the rest of the circuit.
+
+<img width="922" height="752" alt="Screenshot 2026-08-09 141701" src="https://github.com/user-attachments/assets/9962570c-6d74-420e-927b-901163fb85da" />
+
+
+#### 9. Asynchronous vs. Synchronous Set/Reset
+Resets (and sets) are used to force a flip-flop into a known initial state (usually 0 or 1) upon power-up. They can be implemented in two ways:
+
+*   **Synchronous Reset:** The reset signal is only evaluated on the active edge of the clock. 
+    *   *Pros:* Easier timing analysis and perfectly predictable behavior aligned with the clock domain.
+    *   *Cons:* If the clock fails or stops, the reset cannot happen.
+    *   *Verilog Implementation:*
+
+*   **Asynchronous Reset:** The reset signal triggers a change in the output immediately, entirely independent of the clock edge.
+    *   *Pros:* Guarantees a reset even if the clock is absent or unstable during power-up.
+    *   *Cons:* Harder to meet timing constraints (Reset Recovery and Removal time) and can cause metastability if the reset is released exactly at the clock edge.
+
+  <img width="877" height="792" alt="Screenshot 2026-08-09 142206" src="https://github.com/user-attachments/assets/a9118a2f-a2f8-4c2e-a5ea-1f01590fd15a" />
+
+
+#### 10. Hardware-Efficient Math: Multiplying by 2 and 8
+In RTL design, instantiating a dedicated hardware multiplier circuit takes up a massive amount of silicon area and consumes significant power. However, multiplying a binary number by any power of 2 can be achieved using a simple **Left Shift** operation, which requires zero actual logic gates—just a rewiring of the data lines.
+
+*   **Multiply by 2 ($2^1$):** Shift the binary value left by 1 bit.
+    *   *Verilog:* `y = x << 1;`
+    *   *Example:* `0011` (Decimal 3) shifted left by 1 becomes `0110` (Decimal 6).
+*   **Multiply by 8 ($2^3$):** Shift the binary value left by 3 bits.
+    *   *Verilog:* `y = x << 3;`
+    *   *Example:* `0001` (Decimal 1) shifted left by 3 becomes `1000` (Decimal 8).
+
+By using the shift operator (`<<`) instead of the multiplication operator (`*`), the synthesis tool automatically optimizes the design to save space and power.
