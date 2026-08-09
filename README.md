@@ -69,6 +69,8 @@ Yosys performs several critical tasks in the VLSI frontend flow:
 *   **Visualizing Logic:** It can generate graphical schematics of the synthesized logic using the `show` command, helping designers visually inspect how their code was mapped to hardware.
 
   
+### Module 2: 
+Timing Libraries and Synthesis Strategie
 
 CONTENTS:
 1. What does a .lib contain?
