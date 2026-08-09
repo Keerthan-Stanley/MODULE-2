@@ -5,8 +5,8 @@ CONTENTS
 1. What are design, testbench, and simulator?
 2. What is Icarus Verilog?
 3. The "Good Mux" Lab
-4. What is Synthesis?
-5. RTL vs. Gate-Level Netlist
+4. RTL vs. Gate-Level Netlist
+5. What is Synthesis?
 6. What is Yosys?
 7. What can we do with Yosys?
 
