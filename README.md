@@ -22,3 +22,10 @@ This module dives into how synthesis tools use standard cell libraries to make r
 - Why do we need Flip-Flops (Flops)?
 - Asynchronous vs. Synchronous Set/Reset
 - Hardware-efficient math: Multiplying by 2 and 8
+
+## Module 3: Logic Optimization Techniques
+This module covers how synthesis tools simplify and optimize logic — both combinational and sequential — to reduce area, power, and unnecessary hardware without changing functional behavior.
+
+- Combinational Logic Optimization
+- Sequential Logic Optimization
+- Sequential Optimization – Unused Outputs
