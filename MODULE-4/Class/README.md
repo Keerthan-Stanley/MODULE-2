@@ -22,7 +22,7 @@ This section covers why we simulate the gate-level netlist (not just the RTL), w
 - **Catches Synthesis-Simulation Mismatches:** Some RTL constructs simulate one way at the RTL level but synthesize into hardware that behaves differently — GLS is how these bugs are caught before tape-out.
 - **Timing Verification:** With delay annotation, GLS can reveal timing violations (e.g., race conditions, hold-time issues) that a purely functional RTL simulation would never show, since RTL simulation typically assumes zero-delay logic.
 
-<img width="900" height="400" alt="GLS Flow" src="" />
+
 
 ---
 
