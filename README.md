@@ -29,3 +29,11 @@ This module covers how synthesis tools simplify and optimize logic — both comb
 - Combinational Logic Optimization
 - Sequential Logic Optimization
 - Sequential Optimization – Unused Outputs
+
+## Module 4: GLS, Synthesis-Simulation Mismatch & Verilog Statements
+This module covers gate-level simulation (GLS) as a verification checkpoint, why RTL and gate-level simulations can sometimes disagree, and the blocking vs. non-blocking assignment rules in Verilog that are a common root cause of that mismatch.
+
+- What is GLS? Why GLS?
+- Synthesis-Simulation Mismatch
+- Blocking and Non-Blocking Statements in Verilog
+- Caveats with Blocking Statements
