@@ -37,3 +37,10 @@ This module covers gate-level simulation (GLS) as a verification checkpoint, why
 - Synthesis-Simulation Mismatch
 - Blocking and Non-Blocking Statements in Verilog
 - Caveats with Blocking Statements
+
+## Module 5: Conditional Constructs & Loops in Verilog
+This module covers how `if-else` and `case` statements infer hardware, the dangerous latch-inference pitfalls of writing them incompletely, and the difference between `for` loops (used inside procedural blocks) and `generate for` loops (used to replicate hardware structures at compile time).
+
+- If-Case Constructs
+- Incomplete If / Case
+- For Loop and For-Generate
